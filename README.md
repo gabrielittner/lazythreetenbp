@@ -25,7 +25,7 @@ Runtime
 Add a Gradle dependency:
 
 ```groovy
-compile 'com.gabrielittner.threetenbp:runtime:1.0.0'
+compile 'com.gabrielittner.threetenbp:runtime:0.1.0-SNAPSHOT'
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].

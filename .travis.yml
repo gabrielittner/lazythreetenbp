@@ -1,7 +1,13 @@
-language: java
+language: android
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-25.0.2
+    - android-25
 
 jdk:
-  - oraclejdk7
   - oraclejdk8
 
 after_success:
@@ -9,10 +15,10 @@ after_success:
 
 env:
   global:
-    # travis encrypt ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME=PLACEHOLDER
-    - secure: PLACEHOLDER
-    # travis encrypt ORG_GRADLE_PROJECT_SONATYPE_NEXUS_PASSWORD=PLACEHOLDER
-    - secure: PLACEHOLDER
+    # ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME
+    - secure: "LPBEn1BtnGgGmdivo7mldPMXI2JuCa2DtnEHOdGCGAOVmF00mwy5NkGmbvflcQE0Ba9NhlCtyc2fD4v+3LGhz50XtGR/2Y6Ps8T0lnpxpLCaHW6s7Sr1h+Ukfuk1JOebKZoCXaxCfIZBLR5BNjw8Z5DEGwXeOaRCc7UmG5pA1IkeVkgXVgd2YqfPqf6dleU+bXrh3L6mp4/dTOmkn8bus7aFbe+UUNaM1Q3aeZhJXcAwv9QNA2j96WeTtZYOmpgiBrImL9OFSC/QKAVq1TT+WhrkQ6tMGfw2dQwUUN2C8qhIIwJpjqhYdsG2rLvqpvepdcJUpuOuzayUmvSBioZMC7wo3Hcl5CVo2KXuTpIVhTLJpn3UKoh500l2W4PmQ3+NEy3A1JYYgzgP57tVjBTSvoy0osovN+lemeB9V6FmayAclr2Q1s43bqU4rAoiwXAMy0SKwaCIjw0gFpZzGlx7ZxaCKvd7/2vRbWuYFzQbt95xLLCAdwWRAH0bFgql91Io/LHy5hb9SQo6wW1vo2tXaahPmgoRV1KjSUb3gMIkQjbFwo90XQpK1kaGnCXXg7IFlKnls9tvgBau2BwD0ZFJYoahrUI58GDzbd5jX+/4mLxJPhstB7cRt4HI2fmj3ALlCi8alOKEgNgi/NCy7hE7pjFGKSdJdqefSPQbtFtZfuU="
+    # ORG_GRADLE_PROJECT_SONATYPE_NEXUS_PASSWORD
+    - secure: "E7+nRIzjHEhu+3Jo9JpgA/yuSe2Dh/miMz1LbFri5L1j/afHNSqSQMjlLRKhWvUypDd7w88WUdMGu1xkqP8jPs9cY3kpFBn5okKZ5uQIJ3cm3+nzKlBT5OsVC5bLGgqQGeNaeWyfsrRZqYwRmldCzFzhQWpZlu5BSVPjBlHYAsld/itm7O4VlHPdGmYVTUTUg5MgA6fyPS/GxpQbJ+NKDdzKlmJfvG71OFPIcfMpSR9NCY+yhbgtdStUO6tUDQ9etFBA2PDMcbfFPpq3gRI15wHZnf25Iy/YYl7iXfFsICzABysLRB9sWl7SIsfaoywSnGjnYcqeki5V87XvsSrLmNoO/1TXrJ3K6xvIigyDXpAGfJA8f1/KR6OtEzMNXsXgFq0eEkgFyDgHxgCVHp0dq3jmtap1H1f3ljkSWHKvzbDQhocNOOBhCoRr8Yd5UHxs5H5F5ZooKbonNG2IzREJjnj8XQhQXf1dxCJEwhcuhlbueKSOulYfj1LHg7dy3KmqbTWmBNnfv51EsiekVk5dwHE9CQ3XnfjRM5kHDaNnlpZCZlY3cWFNGe2DFwpjcaRicnFmzZT9pvPifzbD/7qrualOR0h8l7ip76Qgrzz8Aa5XVJoRHbk5bdpwbYhk8SlpBul3/8Y3rO4iU7hjYGhQid9T4bHs9Vs0mpekxPF5rmI="
 
 branches:
   except:
