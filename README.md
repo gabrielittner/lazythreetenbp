@@ -2,12 +2,17 @@
 
 A lazy loading ZoneRuleProvider for ThreeTenBp.
 
-## TODO
+## Changes
 
-- benchmarks
-- replace generated zoneId -> fileName switch with string maniputation
-- search for alternative to using package-private `StandardZoneRules`
-- documentation
+Compiler
+- generate java code for list of all timezone ids
+- generate a separate .dat file for each zone
+- only support one timezone data version at a time (makes some things easier)
+
+Runtime
+- custom `ZoneRulesProvider`
+- provides generated timezone id list
+- only reads timezone from assets/disk when that timezone was requested
 
 ## Update tzdb data
 

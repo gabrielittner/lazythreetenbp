@@ -1,6 +1,5 @@
 package com.gabrielittner.threetenbp;
 
-import static com.google.devtools.common.options.OptionsParser.HelpVerbosity.LONG;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.STATIC;
 
@@ -8,7 +7,6 @@ import com.google.devtools.common.options.OptionsParser;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -23,8 +21,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,7 +53,7 @@ public final class LazyZoneRulesCompiler {
         System.out.println(String.format("--%s is required", arg));
     }
 
-    private static final TypeName STRING_SET = ParameterizedTypeName.get(Set.class, String.class);
+    private static final TypeName STRING_LIST = ParameterizedTypeName.get(List.class, String.class);
     private static final String REGION_IDS = "REGION_IDS";
 
     private final CompilerOptions options;
@@ -94,7 +92,7 @@ public final class LazyZoneRulesCompiler {
                         return FileVisitResult.CONTINUE;
                     }
                 });
-                Files.delete(options.tzdbOutputDir);
+                Files.deleteIfExists(options.tzdbOutputDir);
             }
             Files.createDirectory(options.tzdbOutputDir);
             for (Map.Entry<String, ZoneRules> entry : zones.entrySet()) {
@@ -126,9 +124,7 @@ public final class LazyZoneRulesCompiler {
     private TypeSpec generateClass(String version, Map<String, ZoneRules> allBuiltZones) {
         return TypeSpec.classBuilder("LazyZoneRules")
                 .addField(version(version))
-                .addField(STRING_SET, REGION_IDS, STATIC, FINAL)
-                .addStaticBlock(regionIdSet(allBuiltZones.keySet()))
-                .addMethod(provideFileName(allBuiltZones.keySet()))
+                .addField(regionId(allBuiltZones.keySet()))
                 .build();
     }
 
@@ -136,37 +132,26 @@ public final class LazyZoneRulesCompiler {
         return FieldSpec.builder(String.class, "VERSION", STATIC, FINAL).initializer("$S", version).build();
     }
 
-    private CodeBlock regionIdSet(Set<String> allRegionIds) {
+    private FieldSpec regionId(Set<String> allRegionIds) {
         CodeBlock.Builder builder = CodeBlock.builder()
-                .addStatement("$T ids = new $T<>($L)", STRING_SET, LinkedHashSet.class, allRegionIds.size());
-        for (String regionId : allRegionIds) {
-            builder.addStatement("ids.add($S)", regionId);
+                .add("$T.asList(\n$>$>", Arrays.class);
+        Iterator<String> iterator = allRegionIds.iterator();
+        while (iterator.hasNext()) {
+            builder.add("$S", iterator.next());
+            if (iterator.hasNext()) {
+                builder.add(",\n");
+            }
         }
-        return builder
-                .addStatement("$L = $T.unmodifiableSet(ids)", REGION_IDS, Collections.class)
-                .build();
-    }
-
-    private MethodSpec provideFileName(Set<String> allRegionIds) {
-        CodeBlock.Builder builder = CodeBlock.builder()
-                .beginControlFlow("switch (zoneId)");
-        for (String regionId : allRegionIds) {
-            builder.addStatement("case $S: return $S", regionId, zoneFileName(regionId));
-        }
-        builder.addStatement("default: throw new $T($S + zoneId)", IllegalArgumentException.class, "Unknown zoneId: ")
-            .endControlFlow();
-        return MethodSpec.methodBuilder("provideFileName")
-                .addModifiers(STATIC)
-                .returns(String.class)
-                .addParameter(String.class, "zoneId")
-                .addCode(builder.build())
+        builder.add("$<$<)");
+        return FieldSpec.builder(STRING_LIST, REGION_IDS, STATIC, FINAL)
+                .initializer(builder.build())
                 .build();
     }
 
     private void writeZoneRulesFile(Path path, ZoneRules rules) throws IOException {
         Files.deleteIfExists(path);
         if (!Files.exists(path.getParent())) {
-            Files.createDirectory(path.getParent());
+            Files.createDirectories(path.getParent());
         }
         Files.createFile(path);
         try (DataOutputStream out = new DataOutputStream(Files.newOutputStream(path))) {
@@ -177,6 +162,6 @@ public final class LazyZoneRulesCompiler {
     }
 
     private String zoneFileName(String regionId) {
-        return "tzdb/" + regionId.replaceAll("/", "-").toLowerCase() + ".dat";
+        return "tzdb/" + regionId + ".dat";
     }
 }

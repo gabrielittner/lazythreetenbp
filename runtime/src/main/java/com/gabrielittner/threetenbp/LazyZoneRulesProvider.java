@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.StreamCorruptedException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -28,17 +29,16 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
 
     @Override
     protected Set<String> provideZoneIds() {
-        return LazyZoneRules.REGION_IDS;
+        return new HashSet<>(LazyZoneRules.REGION_IDS);
     }
 
     @Override
     protected ZoneRules provideRules(String zoneId, boolean forCaching) {
         Jdk8Methods.requireNonNull(zoneId, "zoneId");
-        String fileName = LazyZoneRules.provideFileName(zoneId);
-        ZoneRules rules = map.get(fileName);
+        ZoneRules rules = map.get(zoneId);
         if (rules == null) {
-            rules = loadData(fileName);
-            map.put(fileName, rules);
+            rules = loadData(zoneId);
+            map.put(zoneId, rules);
         }
         return rules;
     }
@@ -50,7 +50,8 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
         return new TreeMap<>(Collections.singletonMap(versionId, rules));
     }
 
-    private ZoneRules loadData(String fileName) {
+    private ZoneRules loadData(String zoneId) {
+        String fileName = "tzdb/" + zoneId + ".dat";;
         try (InputStream is = context.getAssets().open(fileName)) {
             return loadData(is);
         } catch (Exception ex) {
