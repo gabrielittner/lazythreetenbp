@@ -1,0 +1,29 @@
+language: java
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+after_success:
+  - .buildscript/deploy_snapshot.sh
+
+env:
+  global:
+    # travis encrypt ORG_GRADLE_PROJECT_SONATYPE_NEXUS_USERNAME=PLACEHOLDER
+    - secure: PLACEHOLDER
+    # travis encrypt ORG_GRADLE_PROJECT_SONATYPE_NEXUS_PASSWORD=PLACEHOLDER
+    - secure: PLACEHOLDER
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle/wrapper
+    - $HOME/.gradle/caches/modules-2/files-2.1

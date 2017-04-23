@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+sourceCompatibility = version_java
+targetCompatibility = version_java
+
+task localRun(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "com.gabrielittner.threetenbp.LazyZoneRulesCompiler"
+    def version = project.hasProperty("tzdbversion") ? project.property("tzdbversion") : ""
+    def srcdir = project.hasProperty("srcdir") ? project.property("srcdir") : ""
+    def runtimeDir = rootProject.project("runtime").projectDir
+    args "--version", "$version", "--srcdir", "$srcdir", "--codeoutdir", "$runtimeDir/src/main/java", "--tzdboutdir", "$runtimeDir/src/main/assets"
+}
+
+dependencies {
+    compile deps.threetenbp
+    compile deps.javapoet
+    compile deps.google_options
+}
+
+apply from: rootProject.file('gradle/mvn-push.gradle')

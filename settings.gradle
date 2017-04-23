@@ -1,0 +1,3 @@
+rootProject.name = 'threetenbp-lazy'
+
+include ':compiler', ':runtime'
