@@ -1,6 +1,8 @@
 package com.gabrielittner.threetenbp;
 
 import android.content.Context;
+import java.io.Closeable;
+import java.io.IOException;
 import org.threeten.bp.jdk8.Jdk8Methods;
 import org.threeten.bp.zone.ZoneRules;
 import org.threeten.bp.zone.ZoneRulesCompat;
@@ -52,10 +54,14 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
 
     private ZoneRules loadData(String zoneId) {
         String fileName = "tzdb/" + zoneId + ".dat";;
-        try (InputStream is = context.getAssets().open(fileName)) {
+        InputStream is = null;
+        try {
+            is = context.getAssets().open(fileName);
             return loadData(is);
         } catch (Exception ex) {
             throw new ZoneRulesException("Invalid binary time-zone data: " + fileName, ex);
+        } finally {
+            close(is);
         }
     }
 
@@ -70,5 +76,15 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
             throw new StreamCorruptedException("File format not recognised");
         }
         return ZoneRulesCompat.readZoneRules(dis);
+    }
+
+    private void close(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
