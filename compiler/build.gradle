@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
-sourceCompatibility = version_java
-targetCompatibility = version_java
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 task localRun(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
@@ -16,6 +16,11 @@ dependencies {
     compile deps.threetenbp
     compile deps.javapoet
     compile deps.google_options
+
+    testCompile deps.junit
+    testCompile deps.truth
+    testCompile deps.compile_testing
+    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
 
 apply from: rootProject.file('gradle/mvn-push.gradle')

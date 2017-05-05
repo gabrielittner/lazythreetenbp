@@ -7,24 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 
-public final class ZoneRulesCompilerCompat {
+public final class ZoneRulesCompat {
 
     private final TzdbZoneRulesCompiler compiler;
 
-    public ZoneRulesCompilerCompat(String version, List<File> sourceFiles, File leapSecondsFile, boolean verbose) {
+    public ZoneRulesCompat(
+            String version, List<File> sourceFiles, File leapSecondsFile, boolean verbose) {
         this.compiler = new TzdbZoneRulesCompiler(version, sourceFiles, leapSecondsFile, verbose);
         compiler.setDeduplicateMap(new HashMap<>());
     }
 
-    public void compile() throws Exception {
+    public SortedMap<String, ZoneRules> compile() throws Exception {
         compiler.compile();
-    }
-
-    public SortedMap<String, ZoneRules> getZones() {
         return compiler.getZones();
     }
 
-    public void writeZoneRules(ZoneRules rules, DataOutputStream stream) throws IOException {
+    public static void writeZoneRules(ZoneRules rules, DataOutputStream stream) throws IOException {
         ((StandardZoneRules) rules).writeExternal(stream);
     }
 }
