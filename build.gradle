@@ -24,8 +24,8 @@ ext {
 }
 
 ext.deps = [
-        threetenbp : "org.threeten:threetenbp:1.3.3",
-        threetenbp_notzdb : "org.threeten:threetenbp:1.3.3:no-tzdb",
+        threetenbp : "org.threeten:threetenbp:1.3.4",
+        threetenbp_notzdb : "org.threeten:threetenbp:1.3.4:no-tzdb",
         javapoet : "com.squareup:javapoet:1.8.0",
         google_options: "com.github.pcj:google-options:1.0.0",
 
