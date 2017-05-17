@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    compile deps.support_annotations
     compile deps.threetenbp_notzdb
 }
 

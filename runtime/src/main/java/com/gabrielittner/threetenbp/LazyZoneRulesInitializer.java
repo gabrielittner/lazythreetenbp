@@ -1,7 +1,6 @@
 package com.gabrielittner.threetenbp;
 
 import android.app.Application;
-
 import org.threeten.bp.zone.ZoneRulesInitializer;
 import org.threeten.bp.zone.ZoneRulesProvider;
 

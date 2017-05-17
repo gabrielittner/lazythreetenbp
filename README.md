@@ -1,6 +1,33 @@
-# ThreeTenBp Lazy
+# LazyThreeTenBp
 
 A lazy loading ZoneRuleProvider for ThreeTenBp.
+
+## Usage
+
+You have to initialize LazyThreeTenBp as early as possible, before you're code accesses any of your
+code uses threetenbp. Usually that happens in your `Application.onCreate()` method:
+
+```java
+@Override
+public void onCreate() {
+    super.onCreate();
+    LazyThreeTen.init(this);
+}
+```
+
+Afterwards you can call `LazyThreeTen.cacheZones()` on a background thread to cache the timezone
+information without blocking the startup of your app. If you decide not to do that the individual
+timezones will be loaded on demand when they are accessed for the first time.
+
+## Download
+
+Add a Gradle dependency:
+
+```groovy
+compile 'com.gabrielittner.threetenbp:runtime:0.1.0'
+```
+
+Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
 
 ## Changes
 
@@ -19,16 +46,6 @@ Runtime
 1. Download latest tzdb https://www.iana.org/time-zones
 2. unpack the files
 3. Run `./gradlew localRun -Psrcdir=/path/to/tzdb/files -Ptzdbversion=VERSION`
-
-## Download
-
-Add a Gradle dependency:
-
-```groovy
-compile 'com.gabrielittner.threetenbp:runtime:0.1.0-SNAPSHOT'
-```
-
-Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
 
 ## License
 
