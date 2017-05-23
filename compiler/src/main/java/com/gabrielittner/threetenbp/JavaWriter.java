@@ -27,6 +27,7 @@ final class JavaWriter {
 
     void writeZoneIds(String version, Set<String> zoneIds) throws IOException {
         TypeSpec typeSpec = TypeSpec.classBuilder("LazyZoneRules")
+                .addModifiers(FINAL)
                 .addField(version(version))
                 .addField(regionId(zoneIds))
                 .build();
