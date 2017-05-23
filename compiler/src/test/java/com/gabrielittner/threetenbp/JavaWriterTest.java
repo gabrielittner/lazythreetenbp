@@ -49,7 +49,7 @@ public class JavaWriterTest {
                 + "import java.util.Arrays;"
                 + "import java.util.List;"
                 + "\n"
-                + "class LazyZoneRules {\n"
+                + "final class LazyZoneRules {\n"
                 + "    static final String VERSION = \"2010a\";\n"
                 + "\n"
                 + "    static final List<String> REGION_IDS = Arrays.asList(\n"

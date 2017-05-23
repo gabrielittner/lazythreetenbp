@@ -4,7 +4,7 @@ import java.lang.String;
 import java.util.Arrays;
 import java.util.List;
 
-class LazyZoneRules {
+final class LazyZoneRules {
   static final String VERSION = "2017b";
 
   static final List<String> REGION_IDS = Arrays.asList(
