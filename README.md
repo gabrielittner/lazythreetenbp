@@ -24,7 +24,7 @@ timezones will be loaded on demand when they are accessed for the first time.
 Add a Gradle dependency:
 
 ```groovy
-compile 'com.gabrielittner.threetenbp:runtime:0.1.0'
+compile 'com.gabrielittner.threetenbp:lazythreetenbp:0.2.0'
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
