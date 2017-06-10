@@ -39,4 +39,7 @@ ext.deps = [
         junit: 'junit:junit:4.12',
         truth: 'com.google.truth:truth:0.32',
         compile_testing: 'com.google.testing.compile:compile-testing:0.11',
+
+        test_runner: 'com.android.support.test:runner:0.5',
+        test_rules: 'com.android.support.test:rules:0.5',
 ]

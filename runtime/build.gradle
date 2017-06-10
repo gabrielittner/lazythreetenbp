@@ -6,6 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion version_android_minimum_sdk
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -25,6 +26,9 @@ android {
 dependencies {
     compile deps.support_annotations
     compile deps.threetenbp_notzdb
+
+    androidTestCompile deps.test_runner
+    androidTestCompile deps.test_rules
 }
 
 apply from: rootProject.file('gradle/mvn-push.gradle')
