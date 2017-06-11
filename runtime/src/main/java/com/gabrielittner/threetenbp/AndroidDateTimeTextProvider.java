@@ -31,12 +31,15 @@
  */
 package com.gabrielittner.threetenbp;
 
+import android.os.Build;
+
 import org.threeten.bp.format.DateTimeTextProvider;
 import org.threeten.bp.format.TextStyle;
 import org.threeten.bp.temporal.IsoFields;
 import org.threeten.bp.temporal.TemporalField;
 
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,7 +69,6 @@ import static org.threeten.bp.temporal.ChronoField.MONTH_OF_YEAR;
  * This class is immutable and thread-safe.
  */
 final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
-     // TODO: Better implementation based on CLDR
 
     /** Comparator. */
     private static final Comparator<Entry<String, Long>> COMPARATOR = new Comparator<Entry<String, Long>>() {
@@ -115,64 +117,36 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
         if (field == MONTH_OF_YEAR) {
             DateFormatSymbols oldSymbols = DateFormatSymbols.getInstance(locale);
             Map<TextStyle, Map<Long, String>> styleMap = new HashMap<TextStyle, Map<Long,String>>();
-            Long f1 = 1L;
-            Long f2 = 2L;
-            Long f3 = 3L;
-            Long f4 = 4L;
-            Long f5 = 5L;
-            Long f6 = 6L;
-            Long f7 = 7L;
-            Long f8 = 8L;
-            Long f9 = 9L;
-            Long f10 = 10L;
-            Long f11 = 11L;
-            Long f12 = 12L;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("", locale);
+
+            //Uses the same assumptions about months as SimpleDateTimeTextProvider.
+
             String[] array = oldSymbols.getMonths();
-            Map<Long, String> map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.JANUARY]);
-            map.put(f2, array[Calendar.FEBRUARY]);
-            map.put(f3, array[Calendar.MARCH]);
-            map.put(f4, array[Calendar.APRIL]);
-            map.put(f5, array[Calendar.MAY]);
-            map.put(f6, array[Calendar.JUNE]);
-            map.put(f7, array[Calendar.JULY]);
-            map.put(f8, array[Calendar.AUGUST]);
-            map.put(f9, array[Calendar.SEPTEMBER]);
-            map.put(f10, array[Calendar.OCTOBER]);
-            map.put(f11, array[Calendar.NOVEMBER]);
-            map.put(f12, array[Calendar.DECEMBER]);
+            Map<Long, String> map = createMonthsMapFromSymbolsArray(array);
             styleMap.put(TextStyle.FULL, map);
-            
-            map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.JANUARY].substring(0, 1));
-            map.put(f2, array[Calendar.FEBRUARY].substring(0, 1));
-            map.put(f3, array[Calendar.MARCH].substring(0, 1));
-            map.put(f4, array[Calendar.APRIL].substring(0, 1));
-            map.put(f5, array[Calendar.MAY].substring(0, 1));
-            map.put(f6, array[Calendar.JUNE].substring(0, 1));
-            map.put(f7, array[Calendar.JULY].substring(0, 1));
-            map.put(f8, array[Calendar.AUGUST].substring(0, 1));
-            map.put(f9, array[Calendar.SEPTEMBER].substring(0, 1));
-            map.put(f10, array[Calendar.OCTOBER].substring(0, 1));
-            map.put(f11, array[Calendar.NOVEMBER].substring(0, 1));
-            map.put(f12, array[Calendar.DECEMBER].substring(0, 1));
-            styleMap.put(TextStyle.NARROW, map);
-            
+
             array = oldSymbols.getShortMonths();
-            map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.JANUARY]);
-            map.put(f2, array[Calendar.FEBRUARY]);
-            map.put(f3, array[Calendar.MARCH]);
-            map.put(f4, array[Calendar.APRIL]);
-            map.put(f5, array[Calendar.MAY]);
-            map.put(f6, array[Calendar.JUNE]);
-            map.put(f7, array[Calendar.JULY]);
-            map.put(f8, array[Calendar.AUGUST]);
-            map.put(f9, array[Calendar.SEPTEMBER]);
-            map.put(f10, array[Calendar.OCTOBER]);
-            map.put(f11, array[Calendar.NOVEMBER]);
-            map.put(f12, array[Calendar.DECEMBER]);
+            map = createMonthsMapFromSymbolsArray(array);
             styleMap.put(TextStyle.SHORT, map);
+
+            if (Build.VERSION.SDK_INT >= 18) {
+                map = createMonthsMapFromPattern(dateFormat, "MMMMM");
+                styleMap.put(TextStyle.NARROW, map);
+                map = createMonthsMapFromPattern(dateFormat, "LLLLL");
+                styleMap.put(TextStyle.NARROW_STANDALONE, map);
+            } else {
+                map = createNarrowMonthsMapFromPattern(dateFormat, "MMMM");
+                styleMap.put(TextStyle.NARROW, map);
+                map = createNarrowMonthsMapFromPattern(dateFormat, "LLLL");
+                styleMap.put(TextStyle.NARROW_STANDALONE, map);
+            }
+
+            map = createMonthsMapFromPattern(dateFormat, "LLLL");
+            styleMap.put(TextStyle.FULL_STANDALONE, map);
+
+            map = createMonthsMapFromPattern(dateFormat, "LLL");
+            styleMap.put(TextStyle.SHORT_STANDALONE, map);
+
             return createLocaleStore(styleMap);
         }
         if (field == DAY_OF_WEEK) {
@@ -272,6 +246,43 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
         return "";  // null marker for map
     }
 
+    private Map<Long, String> createMonthsMapFromSymbolsArray(String[] array) {
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
+            long threeTenMonth = calMonth + 1;
+            map.put(threeTenMonth, array[calMonth]);
+        }
+        return map;
+    }
+
+    private Map<Long, String> createMonthsMapFromPattern(
+            SimpleDateFormat dateFormat, String pattern) {
+        dateFormat.applyPattern(pattern);
+
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
+            long threeTenMonth = calMonth + 1;
+            dateFormat.getCalendar().set(Calendar.MONTH, calMonth);
+            String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
+            map.put(threeTenMonth, formattedMonth);
+        }
+        return map;
+    }
+
+    private Map<Long, String> createNarrowMonthsMapFromPattern(
+            SimpleDateFormat dateFormat, String pattern) {
+        dateFormat.applyPattern(pattern);
+
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
+            long threeTenMonth = calMonth + 1;
+            dateFormat.getCalendar().set(Calendar.MONTH, calMonth);
+            String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
+            map.put(threeTenMonth, formattedMonth.substring(0, 1));
+        }
+        return map;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Helper method to create an immutable entry.
@@ -286,8 +297,14 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
     //-----------------------------------------------------------------------
     private static LocaleStore createLocaleStore(Map<TextStyle, Map<Long, String>> valueTextMap) {
-        valueTextMap.put(TextStyle.FULL_STANDALONE, valueTextMap.get(TextStyle.FULL));
-        valueTextMap.put(TextStyle.SHORT_STANDALONE, valueTextMap.get(TextStyle.SHORT));
+        if (!valueTextMap.containsKey(TextStyle.FULL_STANDALONE)) {
+            valueTextMap.put(TextStyle.FULL_STANDALONE, valueTextMap.get(TextStyle.FULL));
+        }
+
+        if (!valueTextMap.containsKey(TextStyle.SHORT_STANDALONE)) {
+            valueTextMap.put(TextStyle.SHORT_STANDALONE, valueTextMap.get(TextStyle.SHORT));
+        }
+
         if (valueTextMap.containsKey(TextStyle.NARROW) && valueTextMap.containsKey(TextStyle.NARROW_STANDALONE) == false) {
             valueTextMap.put(TextStyle.NARROW_STANDALONE, valueTextMap.get(TextStyle.NARROW));
         }
