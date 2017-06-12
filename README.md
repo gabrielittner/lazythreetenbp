@@ -40,6 +40,7 @@ Runtime
 - custom `ZoneRulesProvider`
 - provides generated timezone id list
 - only reads timezone from assets/disk when that timezone was requested
+- improved support for Narrow and Standalone text styles for months and days of week
 
 ## Update tzdb data
 
