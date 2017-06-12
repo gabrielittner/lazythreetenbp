@@ -63,10 +63,21 @@ import static org.threeten.bp.temporal.ChronoField.MONTH_OF_YEAR;
 /**
  * The Service Provider Implementation to obtain date-time text for a field.
  * <p>
- * This implementation is based on extraction of data from a {@link DateFormatSymbols}.
+ * This implementation extracts data from {@link DateFormatSymbols} and {@link SimpleDateFormat}.
+ * <p>
+ * This implementation is based on {@link org.threeten.bp.format.SimpleDateTimeTextProvider SimpleDateTimeTextProvider},
+ * but uses Android-specific features of {@link SimpleDateFormat}
+ * to extract texts for STANDALONE and NARROW styles
+ * for {@link org.threeten.bp.temporal.ChronoField#MONTH_OF_YEAR MONTH_OF_YEAR}
+ * and {@link org.threeten.bp.temporal.ChronoField#DAY_OF_WEEK DAY_OF_WEEK}.
  *
- * <h3>Specification for implementors</h3>
- * This class is immutable and thread-safe.
+ * Texts for other fields are fetched the same way as in
+ * {@link org.threeten.bp.format.SimpleDateTimeTextProvider SimpleDateTimeTextProvider}.
+ * <p>
+ * Note that texts for NARROW style can be extracted only on devices with Android 4.3 or higher.
+ * On pre-Android 4.3 devices NARROW style texts are emulated
+ * by returning only first character of FULL style text.
+ *
  */
 final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
@@ -236,10 +247,29 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
         return "";  // null marker for map
     }
 
+    private Long calMonthToThreeTenMonth(int calMonth) {
+        //Calendar months are from 0 (JANUARY) to 11 (DECEMBER)
+        //ThreeTen months are from 1 (JANUARY) to 12 (DECEMBER)
+
+        //Show boxing explicitly.
+        //noinspection UnnecessaryBoxing
+        return Long.valueOf(calMonth + 1);
+    }
+
+    private Long calDayToThreeTenDay(int calDay) {
+        //Calendar days start from SUNDAY
+        //ThreeTen days start from MONDAY
+        //So 1 -> 7, 2 -> 1, ..., 7 -> 6
+
+        //Show boxing explicitly.
+        //noinspection UnnecessaryBoxing
+        return Long.valueOf(((calDay + 5) % 7) + 1);
+    }
+
     private Map<Long, String> createMonthsMapFromSymbolsArray(String[] array) {
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
-            long threeTenMonth = calMonth + 1;
+            Long threeTenMonth = calMonthToThreeTenMonth(calMonth);
             map.put(threeTenMonth, array[calMonth]);
         }
         return map;
@@ -251,7 +281,7 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
-            long threeTenMonth = calMonth + 1;
+            Long threeTenMonth = calMonthToThreeTenMonth(calMonth);
             dateFormat.getCalendar().set(Calendar.MONTH, calMonth);
             String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
             map.put(threeTenMonth, formattedMonth);
@@ -265,7 +295,7 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calMonth = Calendar.JANUARY; calMonth <= Calendar.DECEMBER; ++calMonth) {
-            long threeTenMonth = calMonth + 1;
+            Long threeTenMonth = calMonthToThreeTenMonth(calMonth);
             dateFormat.getCalendar().set(Calendar.MONTH, calMonth);
             String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
             map.put(threeTenMonth, formattedMonth.substring(0, 1));
@@ -276,7 +306,7 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
     private Map<Long, String> createDaysMapFromSymbolsArray(String[] array) {
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
-            long threeTenDay = ((calDay + 5) % 7) + 1;
+            Long threeTenDay = calDayToThreeTenDay(calDay);
             map.put(threeTenDay, array[calDay]);
         }
         return map;
@@ -288,7 +318,7 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
-            long threeTenDay = ((calDay + 5) % 7) + 1;
+            Long threeTenDay = calDayToThreeTenDay(calDay);
             dateFormat.getCalendar().set(Calendar.DAY_OF_WEEK, calDay);
             String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
             map.put(threeTenDay, formattedMonth);
@@ -302,7 +332,7 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
 
         Map<Long, String> map = new HashMap<Long, String>();
         for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
-            long threeTenDay = ((calDay + 5) % 7) + 1;
+            Long threeTenDay = calDayToThreeTenDay(calDay);
             dateFormat.getCalendar().set(Calendar.DAY_OF_WEEK, calDay);
             String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
             map.put(threeTenDay, formattedMonth.substring(0, 1));
