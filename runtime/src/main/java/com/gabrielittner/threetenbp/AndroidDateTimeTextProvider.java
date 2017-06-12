@@ -152,44 +152,34 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
         if (field == DAY_OF_WEEK) {
             DateFormatSymbols oldSymbols = DateFormatSymbols.getInstance(locale);
             Map<TextStyle, Map<Long, String>> styleMap = new HashMap<TextStyle, Map<Long,String>>();
-            Long f1 = 1L;
-            Long f2 = 2L;
-            Long f3 = 3L;
-            Long f4 = 4L;
-            Long f5 = 5L;
-            Long f6 = 6L;
-            Long f7 = 7L;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("", locale);
+
             String[] array = oldSymbols.getWeekdays();
-            Map<Long, String> map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.MONDAY]);
-            map.put(f2, array[Calendar.TUESDAY]);
-            map.put(f3, array[Calendar.WEDNESDAY]);
-            map.put(f4, array[Calendar.THURSDAY]);
-            map.put(f5, array[Calendar.FRIDAY]);
-            map.put(f6, array[Calendar.SATURDAY]);
-            map.put(f7, array[Calendar.SUNDAY]);
+            Map<Long, String> map = createDaysMapFromSymbolsArray(array);
             styleMap.put(TextStyle.FULL, map);
             
-            map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.MONDAY].substring(0, 1));
-            map.put(f2, array[Calendar.TUESDAY].substring(0, 1));
-            map.put(f3, array[Calendar.WEDNESDAY].substring(0, 1));
-            map.put(f4, array[Calendar.THURSDAY].substring(0, 1));
-            map.put(f5, array[Calendar.FRIDAY].substring(0, 1));
-            map.put(f6, array[Calendar.SATURDAY].substring(0, 1));
-            map.put(f7, array[Calendar.SUNDAY].substring(0, 1));
-            styleMap.put(TextStyle.NARROW, map);
-            
             array = oldSymbols.getShortWeekdays();
-            map = new HashMap<Long, String>();
-            map.put(f1, array[Calendar.MONDAY]);
-            map.put(f2, array[Calendar.TUESDAY]);
-            map.put(f3, array[Calendar.WEDNESDAY]);
-            map.put(f4, array[Calendar.THURSDAY]);
-            map.put(f5, array[Calendar.FRIDAY]);
-            map.put(f6, array[Calendar.SATURDAY]);
-            map.put(f7, array[Calendar.SUNDAY]);
+            map = createDaysMapFromSymbolsArray(array);
             styleMap.put(TextStyle.SHORT, map);
+
+            if (Build.VERSION.SDK_INT >= 18) {
+                map = createDaysMapFromPattern(dateFormat, "EEEEE");
+                styleMap.put(TextStyle.NARROW, map);
+                map = createDaysMapFromPattern(dateFormat, "ccccc");
+                styleMap.put(TextStyle.NARROW_STANDALONE, map);
+            } else {
+                map = createNarrowDaysMapFromPattern(dateFormat, "EEEE");
+                styleMap.put(TextStyle.NARROW, map);
+                map = createNarrowDaysMapFromPattern(dateFormat, "cccc");
+                styleMap.put(TextStyle.NARROW_STANDALONE, map);
+            }
+
+            map = createDaysMapFromPattern(dateFormat, "cccc");
+            styleMap.put(TextStyle.FULL_STANDALONE, map);
+
+            map = createDaysMapFromPattern(dateFormat, "ccc");
+            styleMap.put(TextStyle.SHORT_STANDALONE, map);
+
             return createLocaleStore(styleMap);
         }
         if (field == AMPM_OF_DAY) {
@@ -279,6 +269,43 @@ final class AndroidDateTimeTextProvider extends DateTimeTextProvider {
             dateFormat.getCalendar().set(Calendar.MONTH, calMonth);
             String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
             map.put(threeTenMonth, formattedMonth.substring(0, 1));
+        }
+        return map;
+    }
+
+    private Map<Long, String> createDaysMapFromSymbolsArray(String[] array) {
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
+            long threeTenDay = ((calDay + 5) % 7) + 1;
+            map.put(threeTenDay, array[calDay]);
+        }
+        return map;
+    }
+
+    private Map<Long, String> createDaysMapFromPattern(
+            SimpleDateFormat dateFormat, String pattern) {
+        dateFormat.applyPattern(pattern);
+
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
+            long threeTenDay = ((calDay + 5) % 7) + 1;
+            dateFormat.getCalendar().set(Calendar.DAY_OF_WEEK, calDay);
+            String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
+            map.put(threeTenDay, formattedMonth);
+        }
+        return map;
+    }
+
+    private Map<Long, String> createNarrowDaysMapFromPattern(
+            SimpleDateFormat dateFormat, String pattern) {
+        dateFormat.applyPattern(pattern);
+
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (int calDay = Calendar.SUNDAY; calDay <= Calendar.SATURDAY; ++calDay) {
+            long threeTenDay = ((calDay + 5) % 7) + 1;
+            dateFormat.getCalendar().set(Calendar.DAY_OF_WEEK, calDay);
+            String formattedMonth = dateFormat.format(dateFormat.getCalendar().getTime());
+            map.put(threeTenDay, formattedMonth.substring(0, 1));
         }
         return map;
     }
