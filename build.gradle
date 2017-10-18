@@ -38,7 +38,7 @@ ext {
 
 ext.deps = [
         //runtime
-        support_annotations : "com.android.support:support-annotations:22.2.0",
+        support_annotations : "com.android.support:support-annotations:25.1.0",
         threetenbp_notzdb : "org.threeten:threetenbp:1.3.4:no-tzdb",
 
         //compiler
