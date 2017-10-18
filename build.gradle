@@ -50,4 +50,5 @@ ext.deps = [
         junit: 'junit:junit:4.12',
         truth: 'com.google.truth:truth:0.34',
         compile_testing: 'com.google.testing.compile:compile-testing:0.11',
+        androidTestRunner: 'com.android.support.test:runner:1.0.1',
 ]
