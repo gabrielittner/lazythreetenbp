@@ -1,15 +1,36 @@
+import de.undercouch.gradle.tasks.download.Download
+
 apply plugin: 'java'
+apply plugin: 'de.undercouch.download'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-task localRun(type: JavaExec) {
+def version = project.hasProperty("tzdbVersion") ? project.property("tzdbVersion") : ""
+
+task downloadTzdb(type: Download) {
+    src "https://data.iana.org/time-zones/releases/tzdata${version}.tar.gz"
+    dest file("${buildDir}/tzdb/${version}.tar.gz")
+
+    doFirst {
+        if (version == "") {
+            throw new IllegalArgumentException("Need to specify tzdbVersion project property like 2017c")
+        }
+    }
+}
+
+task unzipTzdb(type: Copy, dependsOn: downloadTzdb) {
+    from tarTree(resources.gzip(downloadTzdb.outputs.files.singleFile))
+    into file("${buildDir}/tzdb-unpacked/$version")
+}
+
+task processTzdb(type: JavaExec, dependsOn: unzipTzdb) {
+    def source = unzipTzdb.outputs.files.singleFile
+    def target = rootProject.project("runtime").file("src/main")
+
     classpath sourceSets.main.runtimeClasspath
     main = "com.gabrielittner.threetenbp.LazyZoneRulesCompiler"
-    def version = project.hasProperty("tzdbversion") ? project.property("tzdbversion") : ""
-    def srcdir = project.hasProperty("srcdir") ? project.property("srcdir") : ""
-    def runtimeDir = rootProject.project("runtime").projectDir
-    args "--version", "$version", "--srcdir", "$srcdir", "--codeoutdir", "$runtimeDir/src/main/java", "--tzdboutdir", "$runtimeDir/src/main/assets"
+    args "--version", version, "--srcdir", source, "--codeoutdir", "$target/java", "--tzdboutdir", "$target/assets"
 }
 
 dependencies {
