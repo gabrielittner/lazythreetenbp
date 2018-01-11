@@ -4,8 +4,8 @@ A lazy loading ZoneRuleProvider for ThreeTenBp.
 
 ## Usage
 
-You have to initialize LazyThreeTenBp as early as possible, before you're code accesses any of your
-code uses threetenbp. Usually that happens in your `Application.onCreate()` method:
+You have to initialize LazyThreeTenBp as early as possible, before your code accesses any threetenbp
+class. Usually the best place is in your `Application.onCreate()` method:
 
 ```java
 @Override
@@ -24,7 +24,8 @@ timezones will be loaded on demand when they are accessed for the first time.
 Add a Gradle dependency:
 
 ```groovy
-compile 'com.gabrielittner.threetenbp:lazythreetenbp:0.2.0'
+implementation "org.threeten:threetenbp:1.3.6:no-tzdb"
+implementation "com.gabrielittner.threetenbp:lazythreetenbp:0.2.0"
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
