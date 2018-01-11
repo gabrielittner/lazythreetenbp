@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 final class LazyZoneRules {
-  static final String VERSION = "2017b";
+  static final String VERSION = "2017c";
 
   static final List<String> REGION_IDS = Arrays.asList(
       "Africa/Abidjan",
@@ -382,7 +382,6 @@ final class LazyZoneRules {
       "CST6CDT",
       "Canada/Atlantic",
       "Canada/Central",
-      "Canada/East-Saskatchewan",
       "Canada/Eastern",
       "Canada/Mountain",
       "Canada/Newfoundland",
