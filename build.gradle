@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'de.undercouch:gradle-download-task:3.3.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
 }

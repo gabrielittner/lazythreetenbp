@@ -44,9 +44,8 @@ Runtime
 
 ## Update tzdb data
 
-1. Download latest tzdb https://www.iana.org/time-zones
-2. unpack the files
-3. Run `./gradlew localRun -Psrcdir=/path/to/tzdb/files -Ptzdbversion=VERSION`
+1. Check for the latest tzdb version at https://www.iana.org/time-zones
+2. Run `./gradlew processTzdb -PtzdbVersion=VERSION`
 
 ## License
 
