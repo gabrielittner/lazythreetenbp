@@ -25,7 +25,7 @@ Add a Gradle dependency:
 
 ```groovy
 implementation "org.threeten:threetenbp:1.3.6:no-tzdb"
-implementation "com.gabrielittner.threetenbp:lazythreetenbp:0.2.0"
+implementation "com.gabrielittner.threetenbp:lazythreetenbp:0.3.0"
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
