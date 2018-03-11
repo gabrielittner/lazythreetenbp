@@ -26,7 +26,7 @@ task unzipTzdb(type: Copy, dependsOn: downloadTzdb) {
 
 task processTzdb(type: JavaExec, dependsOn: unzipTzdb) {
     def source = unzipTzdb.outputs.files.singleFile
-    def target = rootProject.project("runtime").file("src/main")
+    def target = rootProject.project("runtime-tzdb").file("src/main")
 
     classpath sourceSets.main.runtimeClasspath
     main = "com.gabrielittner.threetenbp.LazyZoneRulesCompiler"

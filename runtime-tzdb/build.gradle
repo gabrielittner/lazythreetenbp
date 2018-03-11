@@ -25,13 +25,6 @@ android {
 }
 
 dependencies {
-    implementation project(":runtime-tzdb")
-    implementation deps.support_annotations
-    implementation deps.threetenbp_notzdb
-
-    androidTestImplementation deps.junit
-    androidTestImplementation deps.truth
-    androidTestImplementation deps.androidTestRunner
 }
 
 apply from: rootProject.file('gradle/mvn-push.gradle')
