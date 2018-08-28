@@ -2,6 +2,7 @@ import de.undercouch.gradle.tasks.download.Download
 
 apply plugin: 'java'
 apply plugin: 'de.undercouch.download'
+apply plugin: "com.vanniktech.maven.publish"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -43,5 +44,3 @@ dependencies {
     testCompile deps.compile_testing
     testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
-
-apply from: rootProject.file('gradle/mvn-push.gradle')
