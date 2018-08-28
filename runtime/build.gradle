@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: "com.vanniktech.maven.publish"
 
 android {
     compileSdkVersion version_android_compile_sdk
@@ -31,5 +32,3 @@ dependencies {
     androidTestImplementation deps.truth
     androidTestImplementation deps.androidTestRunner
 }
-
-apply from: rootProject.file('gradle/mvn-push.gradle')
