@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.5.0 *(2018-10-28)*
+----------------------------
+
+#### Time zone database version: 2018g
+
+- updated tzdb to 2018g
+- updated ThreeTenBP to 1.3.8 to handle new tzdb
+
 Version 0.4.0 *(2018-08-28)*
 ----------------------------
 
