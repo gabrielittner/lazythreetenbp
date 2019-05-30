@@ -1,7 +1,14 @@
 Change Log
 ==========
 
-Version 0.5.0 *(2019-05-29)*
+Version 0.7.0 *(2019-05-29)*
+----------------------------
+
+#### Time zone database version: 2019a
+
+- migrate to AndroidX
+
+Version 0.6.0 *(2019-05-29)*
 ----------------------------
 
 #### Time zone database version: 2019a
