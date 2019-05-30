@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.5.0 *(2019-05-29)*
+----------------------------
+
+#### Time zone database version: 2019a
+
+- updated tzdb to 2019a
+
 Version 0.5.0 *(2018-10-28)*
 ----------------------------
 
