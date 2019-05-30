@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 final class LazyZoneRules {
-  static final String VERSION = "2018g";
+  static final String VERSION = "2019a";
 
   static final List<String> REGION_IDS = Arrays.asList(
       "Africa/Abidjan",
@@ -309,6 +309,7 @@ final class LazyZoneRules {
       "Asia/Pontianak",
       "Asia/Pyongyang",
       "Asia/Qatar",
+      "Asia/Qostanay",
       "Asia/Qyzylorda",
       "Asia/Rangoon",
       "Asia/Riyadh",
