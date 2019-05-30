@@ -2,8 +2,8 @@ package com.gabrielittner.threetenbp;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.MainThread;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.MainThread;
+import androidx.annotation.WorkerThread;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.zone.ZoneRulesInitializer;
 import org.threeten.bp.zone.ZoneRulesProvider;
