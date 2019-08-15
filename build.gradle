@@ -7,11 +7,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'de.undercouch:gradle-download-task:4.0.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.8.0'
     }
 }
-apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
     repositories {
