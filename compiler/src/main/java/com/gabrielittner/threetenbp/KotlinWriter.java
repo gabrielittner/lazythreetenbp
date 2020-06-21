@@ -27,6 +27,7 @@ final class KotlinWriter implements RulesWriter {
     @Override
     public void writeZoneIds(String version, Set<String> zoneIds) throws IOException {
         TypeSpec typeSpec = TypeSpec.objectBuilder("LazyZoneRules")
+                .addModifiers(KModifier.INTERNAL)
                 .addProperty(version(version))
                 .addProperty(regionId(zoneIds))
                 .build();

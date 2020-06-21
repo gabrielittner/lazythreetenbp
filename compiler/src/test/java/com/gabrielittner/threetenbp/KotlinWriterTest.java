@@ -58,7 +58,7 @@ public class KotlinWriterTest {
             + "import kotlin.String\n"
             + "import kotlin.collections.List\n"
             + "\n"
-            + "object LazyZoneRules {\n"
+            + "internal object LazyZoneRules {\n"
             + "  const val VERSION: String = \"2010a\"\n"
             + "\n"
             + "  val REGION_IDS: List<String> = listOf(\n"
