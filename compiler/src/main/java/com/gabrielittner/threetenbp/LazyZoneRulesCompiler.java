@@ -5,6 +5,8 @@ import org.threeten.bp.zone.ZoneRules;
 import org.threeten.bp.zone.ZoneRulesCompat;
 import java.util.SortedMap;
 
+import static com.gabrielittner.threetenbp.CompilerOptions.Language.JAVA;
+
 public final class LazyZoneRulesCompiler {
 
     public static void main(String[] args) {
@@ -18,20 +20,20 @@ public final class LazyZoneRulesCompiler {
 
     private final String version;
     private final ZoneRulesCompat compiler;
-    private final JavaWriter javaWriter;
+    private final RulesWriter rulesWriter;
     private final ZoneWriter zoneWriter;
 
     private LazyZoneRulesCompiler(CompilerOptions o) {
         version = o.version;
         compiler = new ZoneRulesCompat(version, o.tzdbFiles(), o.leapSecondFile(), o.verbose);
-        javaWriter = new JavaWriter(o.codeOutputDir);
+        rulesWriter = o.language == JAVA ? new JavaWriter(o.codeOutputDir) : new KotlinWriter(o.codeOutputDir);
         zoneWriter = new ZoneWriter(o.tzdbOutputDir);
     }
 
     private void run() {
         try {
             SortedMap<String, ZoneRules> zones = compiler.compile();
-            javaWriter.writeZoneIds(version, zones.keySet());
+            rulesWriter.writeZoneIds(version, zones.keySet());
             zoneWriter.writeZones(zones);
         } catch (Exception ex) {
             System.out.println("Failed: " + ex.toString());

@@ -38,6 +38,7 @@ task processTzdb(type: JavaExec, dependsOn: unzipTzdb) {
 dependencies {
     implementation deps.threetenbp
     implementation deps.javapoet
+    implementation deps.kotlinpoet
     implementation deps.google_options
 
     testImplementation deps.junit

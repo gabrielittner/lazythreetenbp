@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public final class CompilerOptions extends OptionsBase {
 
@@ -67,6 +68,14 @@ public final class CompilerOptions extends OptionsBase {
             defaultValue = "false"
     )
     public boolean verbose;
+
+    @Option(
+            name = "language",
+            help = "Language output (java or kotlin).",
+            defaultValue = "java",
+            converter = LanguageConverter.class
+    )
+    public Language language;
 
     private List<File> tzdbFiles;
 
@@ -149,6 +158,22 @@ public final class CompilerOptions extends OptionsBase {
         @Override
         public String getTypeDescription() {
             return "Comma separated list of strings";
+        }
+    }
+
+    public enum Language {
+        JAVA, KOTLIN
+    }
+
+    public static final class LanguageConverter implements Converter<Language> {
+
+        @Override public Language convert(String input) {
+            String uppercased = input.toUpperCase(Locale.US);
+            return Language.valueOf(uppercased);
+        }
+
+        @Override public String getTypeDescription() {
+            return "The target language to generate ('java' or 'kotlin')";
         }
     }
 }
