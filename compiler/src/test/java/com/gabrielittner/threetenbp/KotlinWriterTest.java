@@ -41,7 +41,7 @@ public class KotlinWriterTest {
     }
 
     private String generatedSource(String version, String... zoneIds) throws Exception {
-        kotlinWriter.writeZoneIds(version, new LinkedHashSet<>(Arrays.asList(zoneIds)));
+        kotlinWriter.writeZoneIds("com.gabrielittner.threetenbp", version, new LinkedHashSet<>(Arrays.asList(zoneIds)));
         Path output = outputDir.resolve(SOURCE_NAME);
         @Language("kotlin") String sourceString =  new String(Files.readAllBytes(output), Charsets.UTF_8);
         return sourceString;

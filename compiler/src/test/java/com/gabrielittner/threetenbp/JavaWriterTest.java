@@ -38,7 +38,7 @@ public class JavaWriterTest {
     }
 
     private JavaFileObject generatedSource(String version, String... zoneIds) throws Exception {
-        javaWriter.writeZoneIds(version, new LinkedHashSet<>(Arrays.asList(zoneIds)));
+        javaWriter.writeZoneIds("com.gabrielittner.threetenbp", version, new LinkedHashSet<>(Arrays.asList(zoneIds)));
         Path output = outputDir.resolve(SOURCE_NAME + ".java");
         String sourceString =  new String(Files.readAllBytes(output), Charsets.UTF_8);
         return JavaFileObjects.forSourceString(SOURCE_NAME, sourceString);

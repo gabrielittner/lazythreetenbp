@@ -77,6 +77,13 @@ public final class CompilerOptions extends OptionsBase {
     )
     public Language language;
 
+    @Option(
+            name = "packageName",
+            help = "Package name to output with.",
+            defaultValue = "com.gabrielittner.threetenbp"
+    )
+    public String packageName;
+
     private List<File> tzdbFiles;
 
     List<File> tzdbFiles() {

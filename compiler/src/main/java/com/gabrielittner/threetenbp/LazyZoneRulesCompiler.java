@@ -22,18 +22,20 @@ public final class LazyZoneRulesCompiler {
     private final ZoneRulesCompat compiler;
     private final RulesWriter rulesWriter;
     private final ZoneWriter zoneWriter;
+    private final String packageName;
 
     private LazyZoneRulesCompiler(CompilerOptions o) {
         version = o.version;
         compiler = new ZoneRulesCompat(version, o.tzdbFiles(), o.leapSecondFile(), o.verbose);
         rulesWriter = o.language == JAVA ? new JavaWriter(o.codeOutputDir) : new KotlinWriter(o.codeOutputDir);
         zoneWriter = new ZoneWriter(o.tzdbOutputDir);
+        packageName = o.packageName;
     }
 
     private void run() {
         try {
             SortedMap<String, ZoneRules> zones = compiler.compile();
-            rulesWriter.writeZoneIds(version, zones.keySet());
+            rulesWriter.writeZoneIds(packageName, version, zones.keySet());
             zoneWriter.writeZones(zones);
         } catch (Exception ex) {
             System.out.println("Failed: " + ex.toString());

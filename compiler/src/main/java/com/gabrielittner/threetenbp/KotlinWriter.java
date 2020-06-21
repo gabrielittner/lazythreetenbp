@@ -25,7 +25,7 @@ final class KotlinWriter implements RulesWriter {
     }
 
     @Override
-    public void writeZoneIds(String version, Set<String> zoneIds) throws IOException {
+    public void writeZoneIds(String packageName, String version, Set<String> zoneIds) throws IOException {
         TypeSpec typeSpec = TypeSpec.objectBuilder("LazyZoneRules")
                 .addModifiers(KModifier.INTERNAL)
                 .addProperty(version(version))
@@ -35,7 +35,7 @@ final class KotlinWriter implements RulesWriter {
         if (!Files.exists(outputDir)) {
             Files.createDirectories(outputDir);
         }
-        FileSpec.get("com.gabrielittner.threetenbp", typeSpec)
+        FileSpec.get(packageName, typeSpec)
                 .writeTo(outputDir);
     }
 
