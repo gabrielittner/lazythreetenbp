@@ -14,12 +14,17 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import javax.tools.JavaFileObject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class JavaWriterTest {
+
+    @Rule
+    public TemporaryFolder tmpFolder = new TemporaryFolder();
 
     private static final String SOURCE_NAME = "com/gabrielittner/threetenbp/LazyZoneRules";
 
@@ -28,7 +33,7 @@ public class JavaWriterTest {
 
     @Before
     public void setup() throws IOException {
-        outputDir = Files.createTempDirectory(null);
+        outputDir = tmpFolder.newFolder().toPath();
         javaWriter = new JavaWriter(outputDir);
     }
 
