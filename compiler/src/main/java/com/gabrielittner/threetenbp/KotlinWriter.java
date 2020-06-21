@@ -3,6 +3,7 @@ package com.gabrielittner.threetenbp;
 import com.squareup.kotlinpoet.CodeBlock;
 import com.squareup.kotlinpoet.CodeBlocks;
 import com.squareup.kotlinpoet.FileSpec;
+import com.squareup.kotlinpoet.KModifier;
 import com.squareup.kotlinpoet.ParameterizedTypeName;
 import com.squareup.kotlinpoet.PropertySpec;
 import com.squareup.kotlinpoet.TypeName;
@@ -38,7 +39,7 @@ final class KotlinWriter implements RulesWriter {
     }
 
     private PropertySpec version(String version) {
-        return PropertySpec.builder("VERSION", TypeNames.STRING)
+        return PropertySpec.builder("VERSION", TypeNames.STRING, KModifier.CONST)
                 .initializer("%S", version)
                 .build();
     }
