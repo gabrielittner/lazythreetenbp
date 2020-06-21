@@ -1,17 +1,19 @@
 package com.gabrielittner.threetenbp;
 
 import com.squareup.kotlinpoet.CodeBlock;
+import com.squareup.kotlinpoet.CodeBlocks;
 import com.squareup.kotlinpoet.FileSpec;
 import com.squareup.kotlinpoet.ParameterizedTypeName;
 import com.squareup.kotlinpoet.PropertySpec;
 import com.squareup.kotlinpoet.TypeName;
+import com.squareup.kotlinpoet.TypeNames;
 import com.squareup.kotlinpoet.TypeSpec;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 final class KotlinWriter implements RulesWriter {
 
@@ -36,23 +38,22 @@ final class KotlinWriter implements RulesWriter {
     }
 
     private PropertySpec version(String version) {
-        return PropertySpec.builder("VERSION", String.class)
+        return PropertySpec.builder("VERSION", TypeNames.STRING)
                 .initializer("%S", version)
                 .build();
     }
 
     private PropertySpec regionId(Set<String> allRegionIds) {
         CodeBlock.Builder builder = CodeBlock.builder()
-                .add("arrayOf(\n$>$>");
-        Iterator<String> iterator = allRegionIds.iterator();
-        while (iterator.hasNext()) {
-            builder.add("%S", iterator.next());
-            if (iterator.hasNext()) {
-                builder.add(",\n");
-            }
-        }
-        builder.add("%<$<)");
-        TypeName listType = ParameterizedTypeName.get(List.class, String.class);
+                .add("listOf(\n⇥⇥");
+        List<CodeBlock> blocks = allRegionIds.stream()
+            .map(id -> CodeBlock.of("%S", id))
+            .collect(Collectors.toList());
+
+        CodeBlock joined = CodeBlocks.joinToCode(blocks, ",\n");
+        builder.add(joined)
+            .add("⇤⇤\n)");
+        TypeName listType = ParameterizedTypeName.get(TypeNames.LIST, TypeNames.STRING);
         return PropertySpec.builder("REGION_IDS", listType)
                 .initializer(builder.build())
                 .build();

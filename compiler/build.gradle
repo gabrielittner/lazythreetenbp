@@ -1,7 +1,7 @@
 import de.undercouch.gradle.tasks.download.Download
 import org.gradle.internal.jvm.Jvm
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'de.undercouch.download'
 apply plugin: "com.vanniktech.maven.publish"
 
@@ -44,5 +44,6 @@ dependencies {
     testImplementation deps.junit
     testImplementation deps.truth
     testImplementation deps.compile_testing
+    testImplementation deps.kotlin_compile_testing
     testImplementation files(Jvm.current().getToolsJar())
 }
