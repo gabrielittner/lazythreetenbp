@@ -34,7 +34,7 @@ ext.deps = [
         threetenbp_notzdb : "org.threeten:threetenbp:1.4.4:no-tzdb",
 
         //compiler
-        threetenbp : "org.threeten:threetenbp:1.4.1",
+        threetenbp : "org.threeten:threetenbp:1.4.4",
         javapoet : "com.squareup:javapoet:1.13.0",
         kotlinpoet : "com.squareup:kotlinpoet:1.6.0",
         google_options: "com.github.pcj:google-options:1.0.0",
