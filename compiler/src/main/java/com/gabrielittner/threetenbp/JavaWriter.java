@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-final class JavaWriter {
+final class JavaWriter implements RulesWriter {
 
     private final Path outputDir;
 
@@ -25,7 +25,7 @@ final class JavaWriter {
          this.outputDir = outputDir;
     }
 
-    void writeZoneIds(String version, Set<String> zoneIds) throws IOException {
+    @Override public void writeZoneIds(String packageName, String version, Set<String> zoneIds) throws IOException {
         TypeSpec typeSpec = TypeSpec.classBuilder("LazyZoneRules")
                 .addModifiers(FINAL)
                 .addField(version(version))
@@ -35,7 +35,7 @@ final class JavaWriter {
         if (!Files.exists(outputDir)) {
             Files.createDirectories(outputDir);
         }
-        JavaFile.builder("com.gabrielittner.threetenbp", typeSpec)
+        JavaFile.builder(packageName, typeSpec)
                 .build()
                 .writeTo(outputDir);
     }

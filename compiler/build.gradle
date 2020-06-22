@@ -1,6 +1,7 @@
 import de.undercouch.gradle.tasks.download.Download
+import org.gradle.internal.jvm.Jvm
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'de.undercouch.download'
 apply plugin: "com.vanniktech.maven.publish"
 
@@ -35,12 +36,14 @@ task processTzdb(type: JavaExec, dependsOn: unzipTzdb) {
 }
 
 dependencies {
-    compile deps.threetenbp
-    compile deps.javapoet
-    compile deps.google_options
+    implementation deps.threetenbp
+    implementation deps.javapoet
+    implementation deps.kotlinpoet
+    implementation deps.google_options
 
-    testCompile deps.junit
-    testCompile deps.truth
-    testCompile deps.compile_testing
-    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+    testImplementation deps.junit
+    testImplementation deps.truth
+    testImplementation deps.compile_testing
+    testImplementation deps.kotlin_compile_testing
+    testImplementation files(Jvm.current().getToolsJar())
 }
