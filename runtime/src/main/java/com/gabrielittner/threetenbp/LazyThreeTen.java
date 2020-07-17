@@ -4,10 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.zone.ZoneRulesInitializer;
 import org.threeten.bp.zone.ZoneRulesProvider;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class LazyThreeTen {
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean();
