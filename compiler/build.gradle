@@ -3,7 +3,6 @@ import org.gradle.internal.jvm.Jvm
 
 apply plugin: 'java-library'
 apply plugin: 'de.undercouch.download'
-apply plugin: "com.vanniktech.maven.publish"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -31,19 +30,10 @@ task processTzdb(type: JavaExec, dependsOn: unzipTzdb) {
     def target = rootProject.project("runtime").file("src/main")
 
     classpath sourceSets.main.runtimeClasspath
-    main = "com.gabrielittner.threetenbp.LazyZoneRulesCompiler"
-    args "--version", version, "--srcdir", source, "--codeoutdir", "$target/java", "--tzdboutdir", "$target/assets"
+    main = "dev.zacsweers.ticktock.compiler.LazyZoneRulesCompiler"
+    args "--version", version, "--srcdir", source, "--codeoutdir", "$target/java", "--tzdboutdir", "$target/assets", "--packagename", "com.gabrielittner.threetenbp"
 }
 
 dependencies {
-    implementation deps.threetenbp
-    implementation deps.javapoet
-    implementation deps.kotlinpoet
-    implementation deps.google_options
-
-    testImplementation deps.junit
-    testImplementation deps.truth
-    testImplementation deps.compile_testing
-    testImplementation deps.kotlin_compile_testing
-    testImplementation files(Jvm.current().getToolsJar())
+    implementation "dev.zacsweers.ticktock:ticktock-compiler:0.1.0"
 }

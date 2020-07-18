@@ -1,13 +1,9 @@
 package com.gabrielittner.threetenbp;
 
 import android.content.Context;
+import dev.zacsweers.ticktock.runtime.ZoneIdsProvider;
 import java.io.Closeable;
 import java.io.IOException;
-import org.threeten.bp.jdk8.Jdk8Methods;
-import org.threeten.bp.zone.ZoneRules;
-import org.threeten.bp.zone.ZoneRulesCompat;
-import org.threeten.bp.zone.ZoneRulesException;
-import org.threeten.bp.zone.ZoneRulesProvider;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.StreamCorruptedException;
@@ -17,12 +13,19 @@ import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import org.threeten.bp.jdk8.Jdk8Methods;
+import org.threeten.bp.zone.ZoneRules;
+import org.threeten.bp.zone.ZoneRulesCompat;
+import org.threeten.bp.zone.ZoneRulesException;
+import org.threeten.bp.zone.ZoneRulesProvider;
 
 final class LazyZoneRulesProvider extends ZoneRulesProvider {
 
     private final Context context;
 
     private final NavigableMap<String, ZoneRules> map = new ConcurrentSkipListMap<>();
+
+    private final ZoneIdsProvider provider = new GeneratedZoneIdsProvider();
 
     LazyZoneRulesProvider(Context context) {
         super();
@@ -31,7 +34,7 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
 
     @Override
     protected Set<String> provideZoneIds() {
-        return new HashSet<>(LazyZoneRules.REGION_IDS);
+        return new HashSet<>(provider.getZoneIds());
     }
 
     @Override
@@ -47,7 +50,7 @@ final class LazyZoneRulesProvider extends ZoneRulesProvider {
 
     @Override
     protected NavigableMap<String, ZoneRules> provideVersions(String zoneId) {
-        String versionId = LazyZoneRules.VERSION;
+        String versionId = provider.getVersionId();
         ZoneRules rules = provideRules(zoneId, false);
         return new TreeMap<>(Collections.singletonMap(versionId, rules));
     }

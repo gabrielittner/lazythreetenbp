@@ -1,13 +1,15 @@
 package com.gabrielittner.threetenbp;
 
+import dev.zacsweers.ticktock.runtime.ZoneIdsProvider;
+import java.lang.Override;
 import java.lang.String;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
-final class LazyZoneRules {
-  static final String VERSION = "2020a";
+final class GeneratedZoneIdsProvider implements ZoneIdsProvider {
+  private static final String VERSION_ID = "2020a";
 
-  static final List<String> REGION_IDS = Arrays.asList(
+  private static final Collection<String> ZONE_IDS = Arrays.asList(
       "Africa/Abidjan",
       "Africa/Accra",
       "Africa/Addis_Ababa",
@@ -596,4 +598,14 @@ final class LazyZoneRules {
       "W-SU",
       "WET",
       "Zulu");
+
+  @Override
+  public String getVersionId() {
+    return VERSION_ID;
+  }
+
+  @Override
+  public Collection<String> getZoneIds() {
+    return ZONE_IDS;
+  }
 }
