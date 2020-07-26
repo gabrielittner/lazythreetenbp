@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: "com.vanniktech.maven.publish"
+apply plugin: 'dev.zacsweers.ticktock'
 
 android {
     compileSdkVersion version_android_compile_sdk
@@ -24,7 +25,19 @@ android {
     }
 }
 
+String version = project.hasProperty("tzdbVersion") ? project.property("tzdbVersion") : ""
+
+Provider<Directory> generatedDir = layout.buildDirectory.dir("generated/ticktock")
+
+tickTock {
+    tzVersion.set(version)
+    codeOutputDir.set(generatedDir)
+    tzOutputDir.set(layout.projectDirectory.dir("src/main/assets"))
+    packageName.set("com.gabrielittner.threetenbp")
+}
+
 dependencies {
+    tickTockCompiler "dev.zacsweers.ticktock:ticktock-compiler:0.1.1"
     implementation deps.support_annotations
     implementation deps.threetenbp_notzdb
 
