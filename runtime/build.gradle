@@ -37,7 +37,7 @@ tickTock {
 }
 
 dependencies {
-    tickTockCompiler "dev.zacsweers.ticktock:ticktock-compiler:0.1.1"
+    tickTockCompiler "dev.zacsweers.ticktock:ticktock-compiler:0.2.1"
     implementation deps.support_annotations
     implementation deps.threetenbp_notzdb
 
