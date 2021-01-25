@@ -42,7 +42,7 @@ ext.deps = [
 
         //test
         junit: 'junit:junit:4.13',
-        truth: 'com.google.truth:truth:1.0.1',
+        truth: 'com.google.truth:truth:1.1.2',
         compile_testing: 'com.google.testing.compile:compile-testing:0.18',
         kotlin_compile_testing: 'com.github.tschuchortdev:kotlin-compile-testing:1.2.9',
         androidTestRunner: 'com.android.support.test:runner:1.0.2',
