@@ -37,7 +37,7 @@ ext.deps = [
         //compiler
         threetenbp : "org.threeten:threetenbp:1.4.4",
         javapoet : "com.squareup:javapoet:1.13.0",
-        kotlinpoet : "com.squareup:kotlinpoet:1.6.0",
+        kotlinpoet : "com.squareup:kotlinpoet:1.9.0",
         google_options: "com.github.pcj:google-options:1.0.0",
 
         //test
