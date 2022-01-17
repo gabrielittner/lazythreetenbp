@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.10.0 *(2021-01-17)*
+----------------------------
+
+#### Time zone database version: 2021e
+
+- updated tzdb to 2021e
+
 Version 0.9.0 *(2019-05-03)*
 ----------------------------
 
