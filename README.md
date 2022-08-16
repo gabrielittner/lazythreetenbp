@@ -45,7 +45,8 @@ Runtime
 ## Update tzdb data
 
 1. Check for the latest tzdb version at https://www.iana.org/time-zones
-2. Run `./gradlew processTzdb -PtzdbVersion=VERSION`
+2. Update `tzdbVersion` in [runtime/gradle.properties](runtime/gradle.properties)
+3. Run `./gradlew generateLazyZoneRules
 
 ## License
 

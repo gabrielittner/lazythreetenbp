@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 final class GeneratedZoneIdsProvider implements ZoneIdsProvider {
-  private static final String VERSION_ID = "2020a";
+  private static final String VERSION_ID = "2022c";
 
   private static final Collection<String> ZONE_IDS = Arrays.asList(
       "Africa/Abidjan",
@@ -459,6 +459,7 @@ final class GeneratedZoneIdsProvider implements ZoneIdsProvider {
       "Europe/Kaliningrad",
       "Europe/Kiev",
       "Europe/Kirov",
+      "Europe/Kyiv",
       "Europe/Lisbon",
       "Europe/Ljubljana",
       "Europe/London",
@@ -549,6 +550,7 @@ final class GeneratedZoneIdsProvider implements ZoneIdsProvider {
       "Pacific/Guam",
       "Pacific/Honolulu",
       "Pacific/Johnston",
+      "Pacific/Kanton",
       "Pacific/Kiritimati",
       "Pacific/Kosrae",
       "Pacific/Kwajalein",
