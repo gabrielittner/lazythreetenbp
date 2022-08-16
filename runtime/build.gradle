@@ -27,11 +27,9 @@ android {
 
 String version = project.hasProperty("tzdbVersion") ? project.property("tzdbVersion") : ""
 
-Provider<Directory> generatedDir = layout.buildDirectory.dir("generated/ticktock")
-
 tickTock {
     tzVersion.set(version)
-    codeOutputDir.set(generatedDir)
+    codeOutputDir.set(layout.projectDirectory.dir("src/main/java"))
     tzOutputDir.set(layout.projectDirectory.dir("src/main/assets"))
     packageName.set("com.gabrielittner.threetenbp")
 }
