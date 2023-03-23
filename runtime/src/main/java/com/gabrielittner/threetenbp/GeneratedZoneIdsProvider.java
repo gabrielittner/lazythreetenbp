@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 final class GeneratedZoneIdsProvider implements ZoneIdsProvider {
-  private static final String VERSION_ID = "2022g";
+  private static final String VERSION_ID = "2023a";
 
   private static final Collection<String> ZONE_IDS = Arrays.asList(
       "Africa/Abidjan",
