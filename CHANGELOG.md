@@ -1,5 +1,11 @@
 Change Log
 ==========
+Version 0.14.0 *(2023-03-24)*
+----------------------------
+
+#### Time zone database version: 2023a
+
+- updated tzdb to 2022a
 
 Version 0.13.0 *(2022-11-30)*
 ----------------------------
