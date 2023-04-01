@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.16.0 *(2023-03-30)*
+Version 0.16.0 *(2023-04-01)*
 ----------------------------
 
 #### Time zone database version: 2023c
